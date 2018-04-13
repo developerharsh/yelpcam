@@ -10,7 +10,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 var campgroundSchema = new mongoose.Schema({
     name: String,
-    img: String
+    img: String,
+    description: String
+
 });
 
 var Campground = mongoose.model("Campground", campgroundSchema);
@@ -18,7 +20,8 @@ var Campground = mongoose.model("Campground", campgroundSchema);
 // Campground.create(
 //     {
 //         name:"camp2",
-//         img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaUp1CgJzkPMKjSkRDxR5ZPxtQLokdagxa7LdrkwIarr6OAeM3"
+//         img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaUp1CgJzkPMKjSkRDxR5ZPxtQLokdagxa7LdrkwIarr6OAeM3",
+//         description: "this is description about the campground"
 //     }, function(err, campground){
 //         if(err)
 //         {
@@ -43,18 +46,20 @@ app.get("/campgrounds",function(req,res){
             console.log(err);
         }
         else{
-            res.render("campgrounds",{campgrounds:allCampgrounds});
+            res.render("index",{campgrounds:allCampgrounds});
         }
     });
     
 });
 
+
 app.post("/campgrounds",function(req,res){
    
     var name = req.body.name;
     var image = req.body.image;
+    var desc = req.body.description;
 
-    var newCampground = {name:name, img:image};
+    var newCampground = {name:name, img:image, description: desc};
 
     Campground.create(newCampground,function(err,newCampground){
         if(err)
@@ -75,6 +80,21 @@ app.get("/campgrounds/new",function(req,res){
     res.render("new");
 });
 
+
+app.get("/campgrounds/:id",function(req,res){
+
+    Campground.findById(req.params.id,function(err,foundCampground){
+        if(err)
+        {
+            console.log(err);
+        }
+        else
+        {
+            res.render("show",{campground: foundCampground});
+        }
+    })
+    
+});
 
 app.listen(2000,function(){
     console.log("connected");
