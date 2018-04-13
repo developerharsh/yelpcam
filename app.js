@@ -1,23 +1,52 @@
 var express=require("express");
 var app=express();
 var bodyParser = require("body-parser");
+var mongoose = require("mongoose");
+
+mongoose.connect("mongodb://localhost/yelp_cam");
 
 app.set("view engine","ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 
-var campgrounds=[
-    {name:"camp1",img:"https://pixabay.com/get/e136b80728f31c22d2524518b7444795ea76e5d004b0144394f5c27ea2edb4_340.jpg"},
-    {name:"camp2",img:"https://pixabay.com/get/e136b80728f31c22d2524518b7444795ea76e5d004b0144394f5c27ea2edb4_340.jpg"},
-    {name:"camp3",img:"https://pixabay.com/get/ea35b8062cf1063ed1584d05fb1d4e97e07ee3d21cac104497f1c47aa0e8b5b9_340.jpg"}
-];
+var campgroundSchema = new mongoose.Schema({
+    name: String,
+    img: String
+});
+
+var Campground = mongoose.model("Campground", campgroundSchema);
+
+// Campground.create(
+//     {
+//         name:"camp2",
+//         img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaUp1CgJzkPMKjSkRDxR5ZPxtQLokdagxa7LdrkwIarr6OAeM3"
+//     }, function(err, campground){
+//         if(err)
+//         {
+//             console.log(err);
+//         }
+//         else{
+//             console.log("added successfully");
+//             console.log(campground);
+//         }
+//     }
+// );
 
 app.get("/",function(req,res){
     res.render("landing");
 });
 
 app.get("/campgrounds",function(req,res){
-   
-    res.render("campgrounds",{campgrounds:campgrounds});
+    
+    Campground.find({},function(err,allCampgrounds){
+        if(err)
+        {
+            console.log(err);
+        }
+        else{
+            res.render("campgrounds",{campgrounds:allCampgrounds});
+        }
+    });
+    
 });
 
 app.post("/campgrounds",function(req,res){
@@ -27,9 +56,19 @@ app.post("/campgrounds",function(req,res){
 
     var newCampground = {name:name, img:image};
 
-    campgrounds.push(newCampground);
+    Campground.create(newCampground,function(err,newCampground){
+        if(err)
+        {
+            console.log(err);
 
-    res.redirect("/campgrounds");
+        }
+        else
+        {
+            res.redirect("/campgrounds");
+        }
+    })
+
+    
 });
 
 app.get("/campgrounds/new",function(req,res){
