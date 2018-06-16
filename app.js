@@ -2,7 +2,10 @@ var express=require("express");
 var app=express();
 var bodyParser = require("body-parser");
 var mongoose = require("mongoose"),
-Campground = require("./models/campground");
+Campground = require("./models/campground"),
+seedDB = require("./seeds");
+
+seedDB();
 
 mongoose.connect("mongodb://localhost/yelp_cam");
 
