@@ -14,6 +14,12 @@ seedDB();
 mongoose.connect("mongodb://localhost/yelp_cam");
 
 app.set("view engine","ejs");
+
+app.use(function(req,res,next){
+    res.locals.currentUser = req.user;
+    next();
+});
+
 app.use(require("express-session")({
     secret: "this is a secret",
     resave:false,
@@ -58,7 +64,7 @@ app.get("/campgrounds",function(req,res){
             console.log(err);
         }
         else{
-            res.render("campgrounds/index",{campgrounds:allCampgrounds});
+            res.render("campgrounds/index",{campgrounds:allCampgrounds,currentUser: req.user});
         }
     });
     
