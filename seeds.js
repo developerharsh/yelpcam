@@ -36,29 +36,29 @@ function seedDB(){
 
 //Adding campgrounds
 
-data.forEach(function(seed){
-    Campgrounds.create(seed,function(err,created){
-        if(err){
-            console.log(err);
-        }
-        else{
-            console.log("added a campground");
+// data.forEach(function(seed){
+//     Campgrounds.create(seed,function(err,created){
+//         if(err){
+//             console.log(err);
+//         }
+//         else{
+//             console.log("added a campground");
 
-            Comment.create({
-                text: "nice place, but should have internet",
-                author: "anonymous"
-            },function(err,comment){
-                if(err){
-                    console.log(err);
-                }else{
-                    created.comments.push(comment);
-                    created.save();
-                    console.log("created new comment");
-                }
+//             Comment.create({
+//                 text: "nice place, but should have internet",
+//                 author: "anonymous"
+//             },function(err,comment){
+//                 if(err){
+//                     console.log(err);
+//                 }else{
+//                     created.comments.push(comment);
+//                     created.save();
+//                     console.log("created new comment");
+//                 }
 
-            });
-        }
-    });
-});
+//             });
+//         }
+//     });
+// });
 
 module.exports = seedDB;
