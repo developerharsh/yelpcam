@@ -4,6 +4,7 @@ var bodyParser = require("body-parser");
 var passport= require("passport");
 var localStrategy = require("passport-local");
 var mongoose = require("mongoose"),
+methodOverride = require("method-override"),
 Campground = require("./models/campground"),
 Comment = require("./models/comment"),
 seedDB = require("./seeds"),
@@ -13,11 +14,13 @@ var commentRoutes = require("./routes/comments"),
     campgroundRoutes= require("./routes/campgrounds"),
     indexRoutes = require("./routes/index");
 
-seedDB();
+//seedDB();
 
 mongoose.connect("mongodb://localhost/yelp_cam");
 
 app.set("view engine","ejs");
+
+app.use(methodOverride("_method"));
 
 app.use(function(req,res,next){
     res.locals.currentUser = req.user;
