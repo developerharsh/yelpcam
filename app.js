@@ -4,6 +4,7 @@ var bodyParser = require("body-parser");
 var passport= require("passport");
 var localStrategy = require("passport-local");
 var mongoose = require("mongoose"),
+flash = require("connect-flash"),
 methodOverride = require("method-override"),
 Campground = require("./models/campground"),
 Comment = require("./models/comment"),
@@ -21,6 +22,7 @@ mongoose.connect("mongodb://localhost/yelp_cam");
 app.set("view engine","ejs");
 
 app.use(methodOverride("_method"));
+app.use(flash());
 
 
 app.use(require("express-session")({
