@@ -17,7 +17,10 @@ var commentRoutes = require("./routes/comments"),
 
 //seedDB();
 
-mongoose.connect("mongodb://localhost/yelp_cam");
+//mongoose.connect("mongodb://localhost/yelp_cam");
+mongoose.connect("mongodb://harsh:harsh123@ds247171.mlab.com:47171/harsh_yelpcamp");
+
+
 
 app.set("view engine","ejs");
 
@@ -50,6 +53,4 @@ app.use("/campgrounds",campgroundRoutes);
 app.use("/campgrounds/:id/comments",commentRoutes);
 app.use(indexRoutes);
 
-app.listen(2000,function(){
-    console.log("connected");
-});
+app.listen(process.env.PORT || 2000);
